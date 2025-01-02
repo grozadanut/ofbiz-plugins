@@ -85,7 +85,7 @@
         <field name="hours"><display/></field>
         <field name="comments" title="${uiLabelMap.CommonComments}"><display/></field>
         <field name="completeLink" title="${uiLabelMap.CommonStatustoComplete}" widget-style="buttontext">
-            <hyperlink description="${groovy:statusId.equals(&quot;TIMESHEET_IN_PROCESS&quot;)?complete:&quot;&quot;}" target="TimeSheetStatusToComplete" also-hidden="false">
+            <hyperlink description="${groovy:statusId == 'TIMESHEET_IN_PROCESS' ? complete : ''}" target="TimeSheetStatusToComplete" also-hidden="false">
                 <parameter param-name="timesheetId"/>
                 <parameter param-name="statusId" value="TIMESHEET_COMPLETED"/>
             </hyperlink>
@@ -130,8 +130,8 @@
             <set field="complete" value="${uiLabelMap.ProjectMgrToComplete}"/>
         </actions>
         <row-actions>
-            <set field="actualHours" value="${groovy:org.apache.ofbiz.project.Various.calculateActualHours(delegator, timesheetId)}"/>
-            <set field="completeLink" value="${groovy:&quot;TIMESHEET_IN_PROCESS&quot;.equals(statusId)?complete:&quot;&quot;}"/>
+            <set field="actualHours" value="${groovy:org.apache.ofbiz.project.Various.getActualHours(delegator, timesheetId)}"/>
+            <set field="completeLink" value="${groovy:statusId == 'TIMESHEET_IN_PROCESS' ? complete : ''}"/>
         </row-actions>
         <field name="timesheetId" title="${uiLabelMap.WorkEffortTimesheetTimesheetId}" widget-style="buttontext">
             <hyperlink description="${timesheetId}" target="Timesheet" also-hidden="false">
@@ -145,7 +145,7 @@
         <field name="thruDate" title="${uiLabelMap.CommonThruDate}"><display type="date"/></field>
         <!--field name="comments" title="${uiLabelMap.CommonComments}"><display/></field-->
         <field name="completeLink" title="${uiLabelMap.CommonStatustoComplete}" widget-style="buttontext">
-            <hyperlink description="${groovy:statusId.equals(&quot;TIMESHEET_IN_PROCESS&quot;)?complete:&quot;&quot;}" target="TimeSheetStatusToComplete">
+            <hyperlink description="${groovy:statusId == 'TIMESHEET_IN_PROCESS' ? complete : ''}" target="TimeSheetStatusToComplete">
                 <parameter param-name="timesheetId"/>
                 <parameter param-name="statusId" value="TIMESHEET_COMPLETED"/>
             </hyperlink>

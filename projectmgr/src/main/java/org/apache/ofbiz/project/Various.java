@@ -88,6 +88,9 @@ public class Various {
         }
         return startDate;
     }
+    public static Timestamp getCompletionDate(GenericValue task, Timestamp startDate) {
+        return calculateCompletionDate(task, startDate);
+    }
 
     public static double calculateActualHours(Delegator delegator, String timesheetId) {
         double actualHours = 0.00;
@@ -106,5 +109,9 @@ public class Various {
             }
         }
         return actualHours;
+    }
+
+    public static double getActualHours(Delegator delegator, String timesheetId) {
+        return calculateActualHours(delegator, timesheetId);
     }
 }
