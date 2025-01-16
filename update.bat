@@ -13,4 +13,3 @@ rmdir /S /Q %OFBIZ_FRAMEWORK_PATH%\plugins\pricat\webapp\pricatdemo
 xcopy %OFBIZ_PLUGINS_PATH%\projectmgr %OFBIZ_FRAMEWORK_PATH%\plugins\projectmgr\ /E /Y
 xcopy %OFBIZ_PLUGINS_PATH%\rest-api %OFBIZ_FRAMEWORK_PATH%\plugins\rest-api\ /E /Y
 xcopy %OFBIZ_PLUGINS_PATH%\bi %OFBIZ_FRAMEWORK_PATH%\plugins\bi\ /E /Y
-PAUSE
