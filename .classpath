@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="colibri-legacy/src/main/java"/>
+	<classpathentry kind="src" path="colibri-legacy/src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="colibri-legacy/lib/colibri_stat_ejb.jar"/>
+	<classpathentry kind="lib" path="colibri-legacy/lib/jboss-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/danut/git/ofbiz-framework/plugins/colibri-legacy/lib/colibri_stat_ejb.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="/ofbiz"/>
+	<classpathentry kind="lib" path="colibri-legacy/lib/hibernate-core-5.3.15.Final.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

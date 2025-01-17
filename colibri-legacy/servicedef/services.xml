@@ -24,10 +24,10 @@ under the License.
     <vendor></vendor>
     <version>1.0</version>
 
-    <service name="noSyntaxError" engine="interface">
-        <description>
-            Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
-        </description>
-    </service> 
+    <service name="legacy-allProducts" engine="java" 
+            location="ro.colibri.legacy.session.BusinessDelegate" invoke="allProducts">
+        <description>Return all ACTIVE products(no images) from the legacy database</description>
+        <attribute name="products" type="List" mode="OUT" optional="false"/>
+    </service>
     
 </services>
