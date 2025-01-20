@@ -18,6 +18,7 @@ import org.apache.ofbiz.service.ServiceUtil;
 
 import ro.colibri.beans.VanzariBean;
 import ro.colibri.beans.VanzariBeanRemote;
+import ro.colibri.entities.comercial.Partner;
 import ro.colibri.entities.comercial.Product;
 import ro.colibri.entities.comercial.mappings.ProductGestiuneMapping;
 
@@ -182,5 +183,37 @@ public class BusinessDelegate {
         case "TO" -> "WT_mt";
         default -> throw new IllegalArgumentException("Unexpected value: " + uom);
         };
+    }
+    
+    public static Map<String, Object> syncPartners(final DispatchContext ctx,
+            final Map<String, ? extends Object> context) throws GenericTransactionException {
+        final Delegator delegator = ctx.getDelegator();
+        final Map<String, Object> successResult = ServiceUtil.returnSuccess();
+        final List<GenericValue> toBeSynced = new LinkedList<>();
+        final VanzariBeanRemote bean = ServiceLocator.getBusinessService(VanzariBean.class, VanzariBeanRemote.class);
+
+        for (final Partner legacyP : bean.allPartners()) {
+            final GenericValue party = delegator.makeValue("Party");
+            final String legacyId = legacyP.getId() + "";
+            party.set("partyId", legacyId);
+            party.set("partyTypeId", "PARTY_GROUP");
+            party.set("statusId", "PARTY_ENABLED");
+            
+            final GenericValue pg = delegator.makeValue("PartyGroup");
+            pg.set("partyId", legacyId);
+            pg.set("groupName", legacyP.getName());
+
+            toBeSynced.add(party);
+            toBeSynced.add(pg);
+        }
+
+        try {
+            delegator.storeAll(toBeSynced);
+        } catch (final GenericEntityException e) {
+            Debug.logError(e, "An error occurred saving the data", MODULE);
+            return ServiceUtil.returnError(e.getMessage());
+        }
+
+        return successResult;
     }
 }

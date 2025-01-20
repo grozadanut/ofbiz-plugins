@@ -34,4 +34,9 @@ under the License.
         <description>Synchronizes product stock(inventory) from the legacy database</description>
     </service>
     
+    <service name="legacy-syncPartners" engine="java" auth="true"
+            location="ro.colibri.legacy.session.BusinessDelegate" invoke="syncPartners">
+        <description>Synchronizes partners from the legacy database</description>
+    </service>
+    
 </services>
