@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ofbiz-plugins</name>
+	<name>plugins</name>
 	<comment></comment>
 	<projects/>
 	<natures>
@@ -13,4 +13,5 @@
 		</buildCommand>
 	</buildSpec>
 	<linkedResources/>
+	<filteredResources/>
 </projectDescription>

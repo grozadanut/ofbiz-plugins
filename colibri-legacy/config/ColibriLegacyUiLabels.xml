@@ -33,4 +33,9 @@ under the License.
     <property key="ColibriLegacyViewPermissionError">
         <value xml:lang="en">You are not allowed to view this page.</value>
     </property>
+    <property key="ProductSyncError">
+        <value xml:lang="en">ERROR : Could not sync products (write error: </value>
+        <value xml:lang="ro">EROARE : Nu s-au putut sincroniza produsele (eroare: </value>
+        <value xml:lang="hu">HIBA: A termékeket nem sikerült szinkronizálni (hiba: </value>
+    </property>
 </resource>

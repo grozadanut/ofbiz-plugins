@@ -63,8 +63,8 @@ public class ServiceLocator {
             final Properties jndiProps = new Properties();
             jndiProps.put(Context.INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_FACTORY_VALUE);
             jndiProps.put(Context.PROVIDER_URL, PROVIDER_URL_VALUE);
-            jndiProps.put(Context.SECURITY_PRINCIPAL, System.getProperty("COLIBRI_LEGACY_USER", ""));
-            jndiProps.put(Context.SECURITY_CREDENTIALS, System.getProperty("COLIBRI_LEGACY_PASS", ""));
+            jndiProps.put(Context.SECURITY_PRINCIPAL, System.getProperty("colibri_legacy_user", ""));
+            jndiProps.put(Context.SECURITY_CREDENTIALS, System.getProperty("colibri_legacy_pass", ""));
             final InitialContext context = new InitialContext(jndiProps);
             final C businessServiceLoaded = (C) context.lookup(jndiName);
             SERVICES_CACHE.put(jndiName, businessServiceLoaded);
