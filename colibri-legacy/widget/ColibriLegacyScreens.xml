@@ -35,4 +35,24 @@ under the License.
         </section>
     </screen>
 
+    <screen name="ImportExport">
+        <section>
+            <actions>
+                <set field="headerItem" value="importProductStatistics"/>
+                <set field="titleProperty" value="CommonImportExport"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.CommonImportExport}">
+                            <container style="lefthalf">
+                                <label style="h2">${uiLabelMap.CommonImport}</label>
+                                <include-form name="ImportProductStatistics" location="component://colibri-legacy/widget/ColibriLegacyForms.xml"/>
+                            </container>
+                         </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
 </screens>

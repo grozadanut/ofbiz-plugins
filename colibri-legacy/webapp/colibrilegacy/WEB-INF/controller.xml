@@ -41,7 +41,18 @@ under the License.
 
     <!-- Request Mappings -->
     <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="main"/></request-map>
+    <request-map uri="ImportExport">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ImportExport"/>
+    </request-map>
+    <request-map uri="ImportProductStatistics">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="legacy-importProductStatistics" path=""/>
+        <response name="success" type="request" value="ImportExport"/>
+        <response name="error" type="view" value="ImportExport"/>
+    </request-map>
     
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://colibri-legacy/widget/ColibriLegacyScreens.xml#main"/>
+    <view-map name="ImportExport" type="screen" page="component://colibri-legacy/widget/ColibriLegacyScreens.xml#ImportExport"/>
 </site-conf>

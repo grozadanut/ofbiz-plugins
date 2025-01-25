@@ -1,16 +1,27 @@
 package ro.colibri.legacy.session;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVFormat.Builder;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.ofbiz.base.util.Debug;
+import org.apache.ofbiz.base.util.UtilMisc;
 import org.apache.ofbiz.entity.Delegator;
 import org.apache.ofbiz.entity.GenericEntityException;
 import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.transaction.GenericTransactionException;
+import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.security.Security;
 import org.apache.ofbiz.service.DispatchContext;
 import org.apache.ofbiz.service.LocalDispatcher;
@@ -73,8 +84,8 @@ public class BusinessDelegate {
         return successResult;
     }
 
-    public static Map<String, Object> syncStock(final DispatchContext ctx,
-            final Map<String, ? extends Object> context) throws GenericTransactionException {
+    public static Map<String, Object> syncStock(final DispatchContext ctx, final Map<String, ? extends Object> context)
+            throws GenericTransactionException {
         final Delegator delegator = ctx.getDelegator();
         final Locale locale = (Locale) context.get("locale");
         final Map<String, Object> successResult = ServiceUtil.returnSuccess();
@@ -184,7 +195,7 @@ public class BusinessDelegate {
         default -> throw new IllegalArgumentException("Unexpected value: " + uom);
         };
     }
-    
+
     public static Map<String, Object> syncPartners(final DispatchContext ctx,
             final Map<String, ? extends Object> context) throws GenericTransactionException {
         final Delegator delegator = ctx.getDelegator();
@@ -198,13 +209,65 @@ public class BusinessDelegate {
             party.set("partyId", legacyId);
             party.set("partyTypeId", "PARTY_GROUP");
             party.set("statusId", "PARTY_ENABLED");
-            
+
             final GenericValue pg = delegator.makeValue("PartyGroup");
             pg.set("partyId", legacyId);
             pg.set("groupName", legacyP.getName());
 
             toBeSynced.add(party);
             toBeSynced.add(pg);
+        }
+
+        try {
+            delegator.storeAll(toBeSynced);
+        } catch (final GenericEntityException e) {
+            Debug.logError(e, "An error occurred saving the data", MODULE);
+            return ServiceUtil.returnError(e.getMessage());
+        }
+
+        return successResult;
+    }
+
+    public static Map<String, Object> importProductStatistics(final DispatchContext ctx,
+            final Map<String, ? extends Object> context) throws GenericTransactionException {
+        final Locale locale = (Locale) context.get("locale");
+        final Delegator delegator = ctx.getDelegator();
+        final Map<String, Object> successResult = ServiceUtil.returnSuccess();
+        final List<GenericValue> toBeSynced = new LinkedList<>();
+        final ByteBuffer fileBytes = (ByteBuffer) context.get("uploadedFile");
+        if (fileBytes == null) {
+            return ServiceUtil.returnError(Messages.nls(Messages.UPLOADED_FILE_MISSING, locale));
+        }
+        final String encoding = System.getProperty("file.encoding");
+        final String csvString = Charset.forName(encoding).decode(fileBytes).toString();
+        final Builder csvFormatBuilder = Builder.create();
+        final CSVFormat fmt = csvFormatBuilder.build();
+
+        try (BufferedReader csvReader = new BufferedReader(new StringReader(csvString))) {
+            for (final CSVRecord rec : fmt.parse(csvReader)) {
+                final String barcode = rec.get(0);
+                final String paretoCat = rec.get(4);
+                final BigDecimal safetyStock = UtilMisc.toBigDecimal(rec.get(5)).setScale(0, RoundingMode.UP)
+                        .max(BigDecimal.ZERO);
+
+                final String productId = (String) EntityQuery.use(delegator).from("GoodIdentification")
+                        .where("goodIdentificationTypeId", "SKU", "idValue", barcode).queryOne().get("productId");
+
+                final GenericValue categoryAttr = delegator.makeValue("ProductAttribute");
+                categoryAttr.set("productId", productId);
+                categoryAttr.set("attrName", "Pareto");
+                categoryAttr.set("attrValue", paretoCat);
+                toBeSynced.add(categoryAttr);
+
+//                final GenericValue productFacility = delegator.makeValue("ProductFacility");
+//                productFacility.set("productId", productId);
+//                productFacility.set("facilityId", "L2");
+//                productFacility.set("minimumStock", safetyStock.intValueExact());
+//                toBeSynced.add(productFacility);
+            }
+        } catch (final IOException | GenericEntityException e) {
+            Debug.logError(e, MODULE);
+            return ServiceUtil.returnError(e.getMessage());
         }
 
         try {

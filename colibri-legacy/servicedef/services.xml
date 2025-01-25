@@ -39,4 +39,10 @@ under the License.
         <description>Synchronizes partners from the legacy database</description>
     </service>
     
+    <service name="legacy-importProductStatistics" engine="java"
+        location="ro.colibri.legacy.session.BusinessDelegate" invoke="importProductStatistics" auth="true">
+        <description>Import product Pareto category and safety stock in csv format</description>
+        <attribute mode="IN" name="uploadedFile" type="java.nio.ByteBuffer" optional="true" />
+    </service>
+    
 </services>

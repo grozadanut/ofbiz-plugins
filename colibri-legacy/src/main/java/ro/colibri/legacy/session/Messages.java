@@ -11,4 +11,5 @@ public class Messages {
     public static final String RESOURCE_NAME = "ColibriLegacyUiLabels";
     
     public static final String PRODUCT_SYNC_ERROR = "ProductSyncError";
+    public static final String UPLOADED_FILE_MISSING = "UploadedFileDataNotFound";
 }

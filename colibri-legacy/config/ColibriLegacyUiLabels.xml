@@ -38,4 +38,9 @@ under the License.
         <value xml:lang="ro">EROARE : Nu s-au putut sincroniza produsele (eroare: </value>
         <value xml:lang="hu">HIBA: A termékeket nem sikerült szinkronizálni (hiba: </value>
     </property>
+    <property key="UploadedFileDataNotFound">
+        <value xml:lang="en">Uploaded file data not found</value>
+        <value xml:lang="ro">Datele fișierului încărcat nu au fost găsite</value>
+        <value xml:lang="hu">A feltöltött fájl adatai nem találhatók</value>
+    </property>
 </resource>
