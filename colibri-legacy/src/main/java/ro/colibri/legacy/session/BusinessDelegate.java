@@ -250,8 +250,13 @@ public class BusinessDelegate {
                 final BigDecimal safetyStock = UtilMisc.toBigDecimal(rec.get(5)).setScale(0, RoundingMode.UP)
                         .max(BigDecimal.ZERO);
 
-                final String productId = (String) EntityQuery.use(delegator).from("GoodIdentification")
-                        .where("goodIdentificationTypeId", "SKU", "idValue", barcode).queryOne().get("productId");
+                final GenericValue product = EntityQuery.use(delegator).from("GoodIdentification")
+                        .where("goodIdentificationTypeId", "SKU", "idValue", barcode).queryOne();
+
+                if (product == null)
+                    continue;
+
+                final String productId = (String) product.get("productId");
 
                 final GenericValue categoryAttr = delegator.makeValue("ProductAttribute");
                 categoryAttr.set("productId", productId);
