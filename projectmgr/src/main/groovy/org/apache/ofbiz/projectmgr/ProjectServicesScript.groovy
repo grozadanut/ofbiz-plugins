@@ -34,7 +34,7 @@ import java.sql.Timestamp
 Map createProject() {
     Map serviceResult
     if (parameters.templateId) {
-        serviceResult = run service: 'copyProjet', with: [*: parameters,
+        serviceResult = run service: 'copyProject', with: [*: parameters,
                                                           projectId: parameters.templateId]
     } else {
         serviceResult = run service: 'createWorkEffort', with: [*: parameters,
