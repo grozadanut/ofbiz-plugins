@@ -33,8 +33,8 @@ import ro.colibri.entities.comercial.Partner;
 import ro.colibri.entities.comercial.Product;
 import ro.colibri.entities.comercial.mappings.ProductGestiuneMapping;
 
-public class BusinessDelegate {
-    private static final String MODULE = BusinessDelegate.class.getName();
+public class LegacySyncServices {
+    private static final String MODULE = LegacySyncServices.class.getName();
 
     public static Map<String, Object> syncAllProducts(final DispatchContext ctx,
             final Map<String, ? extends Object> context) throws GenericTransactionException {
@@ -253,8 +253,9 @@ public class BusinessDelegate {
                 final GenericValue product = EntityQuery.use(delegator).from("GoodIdentification")
                         .where("goodIdentificationTypeId", "SKU", "idValue", barcode).queryOne();
 
-                if (product == null)
+                if (product == null) {
                     continue;
+                }
 
                 final String productId = (String) product.get("productId");
 

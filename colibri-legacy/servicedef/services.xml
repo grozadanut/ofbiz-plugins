@@ -25,23 +25,23 @@ under the License.
     <version>1.0</version>
 
     <service name="legacy-syncAllProducts" engine="java" auth="true" require-new-transaction="true" transaction-timeout="300"
-            location="ro.colibri.legacy.session.BusinessDelegate" invoke="syncAllProducts">
+            location="ro.colibri.legacy.session.LegacySyncServices" invoke="syncAllProducts">
         <description>Synchronizes all ACTIVE products(no images) from the legacy database to the Ofbiz database. No stock, just initial data</description>
     </service>
     
     <service name="legacy-syncStock" engine="java" auth="true" require-new-transaction="true" transaction-timeout="600"
-            location="ro.colibri.legacy.session.BusinessDelegate" invoke="syncStock">
+            location="ro.colibri.legacy.session.LegacySyncServices" invoke="syncStock">
         <description>Synchronizes product stock(inventory) from the legacy database</description>
     </service>
     
     <service name="legacy-syncPartners" engine="java" auth="true"
-            location="ro.colibri.legacy.session.BusinessDelegate" invoke="syncPartners">
+            location="ro.colibri.legacy.session.LegacySyncServices" invoke="syncPartners">
         <description>Synchronizes partners from the legacy database</description>
     </service>
     
     <service name="legacy-importProductStatistics" engine="java"
-        location="ro.colibri.legacy.session.BusinessDelegate" invoke="importProductStatistics" auth="true">
-        <description>Import product Pareto category and safety stock in csv format</description>
+        location="ro.colibri.legacy.session.LegacySyncServices" invoke="importProductStatistics" auth="true">
+        <description>Import product Pareto category</description>
         <attribute mode="IN" name="uploadedFile" type="java.nio.ByteBuffer" optional="true" />
     </service>
     
